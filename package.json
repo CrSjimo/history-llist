@@ -1,0 +1,28 @@
+{
+  "name": "history-llist",
+  "version": "1.0.0",
+  "description": "Undoable linked list.",
+  "main": "out/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrSjimo/history-llist.git"
+  },
+  "keywords": [
+    "linked-list",
+    "undo"
+  ],
+  "author": "Crindzebra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CrSjimo/history-llist/issues"
+  },
+  "homepage": "https://github.com/CrSjimo/history-llist#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0"
+  }
+}
