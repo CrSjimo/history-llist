@@ -58,9 +58,12 @@ export function shift<T>(linkedList:HLList<T>){
 export function insertAfter<T>(linkedList:HLList<T>,destination:number,...values:T[]){
     if(destination==-1){
         unshift(linkedList,...values);
+        return;
     }
     let nodeStart = linkedList.nodeAt(destination);
-    if(nodeStart == null)return;
+    if(nodeStart == null){
+        throw new RangeError('Index overflowed.');
+    };
     let nodeEnd = nodeStart.next;
     let ptr = nodeStart;
     for(let value of values){
@@ -76,9 +79,12 @@ export function insertAfter<T>(linkedList:HLList<T>,destination:number,...values
     }
 }
 
-export function removeRange<T>(linkedList:HLList<T>,start:number = 0,end:number = linkedList.length){
+export function removeRange<T>(linkedList:HLList<T>,start:number,end:number){
     let nodeStart = linkedList.nodeAt(start-1);
     let nodeEnd = linkedList.nodeAt(end);
+    if(start < 0 || end > linkedList.length || start>end){
+        throw new RangeError(`Index overflowed.`);
+    }
     if(nodeStart != null){
         nodeStart.next = nodeEnd;
     }else{
@@ -95,5 +101,7 @@ export function set<T>(linkedList:HLList<T>,index:number,value:T){
     let node = linkedList.nodeAt(index);
     if(node!=null){
         node.value = value;
+    }else{
+        throw new RangeError('Index overflowed.');
     }
 }

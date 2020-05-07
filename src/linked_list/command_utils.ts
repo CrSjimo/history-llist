@@ -10,7 +10,7 @@ export function cmd<K extends Commands>(name: K){
     }
 }
 
-export const CommandHandlers = {
+export const commandHandlers = {
     [Commands.push]: llUtils.push,
     [Commands.pop]: llUtils.pop,
     [Commands.unshift]: llUtils.unshift,
@@ -55,6 +55,16 @@ export function getCorrespondingCommand<T,K extends Commands>(linkedList:HLList<
             name: Commands.removeRange,
             parameter: [command.parameter[0]+1,command.parameter[0]+command.parameter.length],
         });
+    }else if(assertCommandType(command,Commands.removeRange)){
+        commandList.push({
+            name: Commands.insertAfter,
+            parameter: [command.parameter[0]-1,...linkedList.slice(command.parameter[0],command.parameter[1])],
+        });
+    }else if(assertCommandType(command,Commands.set)){
+        commandList.push({
+            name: Commands.set,
+            parameter: [command.parameter[0], linkedList.at(command.parameter[0])!],
+        })
     }
-    return commandList as any;
+    return commandList as any;  //Type already declared in function declaration
 }

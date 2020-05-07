@@ -66,12 +66,12 @@ describe("util_test",()=>{
     });
     it('removeRange',()=>{
         let ll=new HLList([1,2,3,4,5]);
-        llUtils.removeRange(ll);
+        llUtils.removeRange(ll,0,5);
         expect(ll.toArray()).deep.equal([]);
         expect(ll.head).equal(null);
         expect(ll.tail).equal(null);
         ll = new HLList([1,2,3,4,5]);
-        llUtils.removeRange(ll,2);
+        llUtils.removeRange(ll,2,5);
         expect(ll.toArray()).deep.equal([1,2]);
         expect(ll.head?.value).equal(1);
         expect(ll.tail?.value).equal(2);
@@ -85,6 +85,9 @@ describe("util_test",()=>{
         expect(ll.toArray()).deep.equal([1,5]);
         expect(ll.head?.value).equal(1);
         expect(ll.tail?.value).equal(5);
+        ll = new HLList([1,2,3,4,5]);
+        llUtils.removeRange(ll,3,3);
+        expect(ll.toArray()).deep.equal([1,2,3,4,5]);
     });
     it("set",()=>{
         let ll =new HLList([1,2,3,4,5]);

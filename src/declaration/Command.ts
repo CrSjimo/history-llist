@@ -7,7 +7,7 @@ export interface ParamTypeMap<T>{
     [Commands.unshift]: [...T[]];
     [Commands.shift]: [];
     [Commands.insertAfter]: [number, ...T[]];
-    [Commands.removeRange]: [number?,number?];
+    [Commands.removeRange]: [number,number];
     [Commands.set]: [number,T];
 }
 export interface CorrespondingCommandMap{
@@ -19,7 +19,7 @@ export interface CorrespondingCommandMap{
     [Commands.removeRange]: Commands.insertAfter;
     [Commands.set]: Commands.set;
 }
-export interface Command<T,K extends Commands = any>{
+export interface Command<T,K extends Commands = Commands>{
     name: K;
     parameter: ParamTypeMap<T>[K];
 }

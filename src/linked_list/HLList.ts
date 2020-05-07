@@ -3,6 +3,7 @@ import { Command } from "../declaration/Command";
 import { ListNode } from "./ListNode";
 import { Step } from "../declaration/Step";
 import * as llUtils from "./linked_list_utils";
+import { getCorrespondingCommand, commandHandlers } from "./command_utils";
 
 /**
  * History Linked List
@@ -19,16 +20,11 @@ export class HLList<T>{
     maxHistory:number;
     head:ListNode<T>|null = null;
     tail:ListNode<T>|null = null;
-    protected _length = -1;
     get length(){
-        if(this._length!=-1){
-            return this._length;
-        }
         let index=0;
         for(let value of this){
             index++;
         }
-        this._length = index;
         return index;
     }
 
@@ -155,11 +151,42 @@ export class HLList<T>{
         return ret;
     }
 
-    protected undoStack: Step<T>[] = [];
-    protected redoStack: Step<T>[] = [];
+    undoStack: Step<T>[] = [];
+    redoStack: Step<T>[] = [];
 
-    execute(...commands:Command<T>[]){
-        this._length = -1;
+    _executeRedo(commands:Command<T>[],label?:string){
+        let correspondingCommandsList:Command<T>[] = [];
+        for(let command of commands){
+            let correspondingCommands = getCorrespondingCommand(this,command);
+            correspondingCommandsList.push(...correspondingCommands);
+            (commandHandlers[command.name]as any)(this,...command.parameter);
+        }
+        this.undoStack.push({label,commands: correspondingCommandsList});
     }
 
+    _executeUndo(commands:Command<T>[],label?:string){
+        let correspondingCommandsList:Command<T>[] = [];
+        for(let command of commands.reverse()){
+            let correspondingCommands = getCorrespondingCommand(this,command);
+            correspondingCommandsList.unshift(...correspondingCommands);
+            (commandHandlers[command.name]as any)(this,...command.parameter);
+        }
+        this.redoStack.unshift({label,commands: correspondingCommandsList});
+    }
+
+    execute(commands:Command<T>[],label?:string){
+        this._executeRedo(commands,label);
+        this.redoStack = [];
+    }
+
+    undo(){
+        let step = this.undoStack.pop();
+        if(!step)return;
+        this._executeUndo(step.commands,step.label);
+    }
+    redo(){
+        let step = this.redoStack.shift();
+        if(!step)return;
+        this._executeRedo(step.commands,step.label);
+    }
 }
