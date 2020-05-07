@@ -177,6 +177,9 @@ export class HLList<T>{
     execute(commands:Command<T>[],label?:string){
         this._executeRedo(commands,label);
         this.redoStack = [];
+        if(this.undoStack.length>this.maxHistory){
+            this.undoStack.shift();
+        }
     }
 
     undo(){

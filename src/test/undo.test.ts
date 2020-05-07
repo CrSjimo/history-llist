@@ -27,7 +27,7 @@ describe('undo',()=>{
         expect(ll.toArray(),'#4').deep.equal([1,2,3,4,5]);
     });
     it('random undo redo',()=>{
-        let ll=new HLList([1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]);
+        let ll=new HLList([1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0],{maxHistory:Infinity});
         for(let i=0;i<100;i++){
             let randCmd = randInt(0,6);
             if(randCmd==5)randCmd=6;
