@@ -29,7 +29,8 @@ describe('undo',()=>{
     it('random undo redo',()=>{
         let ll=new HLList([1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]);
         for(let i=0;i<100;i++){
-            let randCmd = randInt(0,5);
+            let randCmd = randInt(0,6);
+            if(randCmd==5)randCmd=6;
             let len = ll.length;
             let p = [];
             for(let j=0;j<16;j++)p.push(randInt(0,len));
